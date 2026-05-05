@@ -2,6 +2,7 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/mwibutsa/recurrly?utm_source=oss&utm_medium=github&utm_campaign=mwibutsa%2Frecurrly&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 ## Get started
 
 1. Install dependencies
