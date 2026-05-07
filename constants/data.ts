@@ -8,12 +8,12 @@ export const tabs: AppTab[] = [
 ];
 
 export const HOME_USER = {
-  name: "Mwibutsa | CodeEvangelist",
+  name: "Mwibutsa",
 };
 
 export const HOME_BALANCE = {
-  amount: 100.0,
-  nextRenewalDate: "2026-06-06T09:00:00.000Z",
+  amount: 2530.5,
+  nextRenewalDate: "2026-07-17",
 };
 
 export const UPCOMING_SUBSCRIPTIONS: UpcomingSubscription[] = [
