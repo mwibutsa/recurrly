@@ -10,8 +10,9 @@ import { useUser } from "@clerk/expo";
 import dayjs from "dayjs";
 import { styled } from "nativewind";
 import React, { useState } from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
+import CreateSubscriptionModal from "../components/CreateSubscriptionModal";
 import ListHeading from "../components/ListHeading";
 import SubscriptionCard from "../components/SubscriptionCard";
 import UpcomingSubscriptionCard from "../components/UpcomingSubscriptionCard";
@@ -25,14 +26,21 @@ export default function Index() {
     user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] ||
     "there";
 
-  const [expandedSubscriptionId, setExpandedSubscriptionId] = useState<
-    string | null
-  >(null);
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>(HOME_SUBSCRIPTIONS);
+  const [expandedSubscriptionId, setExpandedSubscriptionId] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleAddSubscription = (subscription: Subscription) => {
+    setSubscriptions((prev) => [subscription, ...prev]);
+    setModalVisible(false);
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-background p-5">
       <FlatList
         ListHeaderComponent={
           <>
+            {/* Header */}
             <View className="home-header">
               <View className="home-user">
                 <Image
@@ -45,8 +53,12 @@ export default function Index() {
                   {displayName}
                 </Text>
               </View>
-              <Image source={icons.add} className="home-add-icon" />
+              <Pressable onPress={() => setModalVisible(true)}>
+                <Image source={icons.add} className="home-add-icon" />
+              </Pressable>
             </View>
+
+            {/* Balance card */}
             <View className="home-balance-card">
               <Text className="home-balance-label">Balance</Text>
               <View className="home-balance-row">
@@ -59,6 +71,7 @@ export default function Index() {
               </View>
             </View>
 
+            {/* Upcoming */}
             <View>
               <ListHeading title="Upcoming" />
               <FlatList
@@ -76,10 +89,11 @@ export default function Index() {
                 }
               />
             </View>
+
             <ListHeading title="All subscriptions" />
           </>
         }
-        data={HOME_SUBSCRIPTIONS}
+        data={subscriptions}
         renderItem={({ item }) => (
           <SubscriptionCard
             {...item}
@@ -99,6 +113,12 @@ export default function Index() {
         extraData={expandedSubscriptionId}
         ItemSeparatorComponent={() => <View className="h-4" />}
         contentContainerClassName="pb-30"
+      />
+
+      <CreateSubscriptionModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onSubmit={handleAddSubscription}
       />
     </SafeAreaView>
   );
