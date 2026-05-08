@@ -1,12 +1,12 @@
 import {
   HOME_BALANCE,
   HOME_SUBSCRIPTIONS,
-  HOME_USER,
   UPCOMING_SUBSCRIPTIONS,
 } from "@/constants/data";
 import { icons } from "@/constants/icons";
 import images from "@/constants/images";
 import { formatCurrency } from "@/lib/utils";
+import { useUser } from "@clerk/expo";
 import dayjs from "dayjs";
 import { styled } from "nativewind";
 import React, { useState } from "react";
@@ -19,6 +19,12 @@ import UpcomingSubscriptionCard from "../components/UpcomingSubscriptionCard";
 const SafeAreaView = styled(RNSafeAreaView);
 
 export default function Index() {
+  const { user } = useUser();
+  const displayName =
+    [user?.firstName, user?.lastName].filter(Boolean).join(" ") ||
+    user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] ||
+    "there";
+
   const [expandedSubscriptionId, setExpandedSubscriptionId] = useState<
     string | null
   >(null);
@@ -29,8 +35,15 @@ export default function Index() {
           <>
             <View className="home-header">
               <View className="home-user">
-                <Image source={images.avatar} className="home-avatar" />
-                <Text className="home-user-name">{HOME_USER.name}</Text>
+                <Image
+                  source={
+                    user?.imageUrl ? { uri: user.imageUrl } : images.avatar
+                  }
+                  className="home-avatar"
+                />
+                <Text className="home-user-name text-[16px]!">
+                  {displayName}
+                </Text>
               </View>
               <Image source={icons.add} className="home-add-icon" />
             </View>
